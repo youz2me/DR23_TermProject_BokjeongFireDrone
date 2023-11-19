@@ -56,7 +56,7 @@ class DetectParking():
             msg_pub_max_vel.data = 0.00
             self.pub_max_vel.publish(msg_pub_max_vel)
 
-            rospy.sleep(1)
+            rospy.sleep(0.2)
 
             rospy.loginfo("go straight")
             msg_moving = MovingParam()
@@ -69,7 +69,7 @@ class DetectParking():
                     break
             self.is_moving_complete = False
 
-            rospy.sleep(1)
+            rospy.sleep(0.2)
 
             rospy.loginfo("go left")
             msg_moving = MovingParam()
@@ -82,7 +82,7 @@ class DetectParking():
                     break
             self.is_moving_complete = False
 
-            rospy.sleep(1)
+            rospy.sleep(0.2)
 
             rospy.loginfo("go straight")
             msg_moving = MovingParam()
@@ -95,7 +95,7 @@ class DetectParking():
                     break
             self.is_moving_complete = False
 
-            rospy.sleep(1)
+            rospy.sleep(0.2)
 
             self.start_obstacle_detection = True
             while True:
@@ -115,33 +115,38 @@ class DetectParking():
                         break
                 self.is_moving_complete = False
 
-                rospy.sleep(1)
+                rospy.sleep(0.2)
 
                 rospy.loginfo("go straight")
                 msg_moving = MovingParam()
                 msg_moving.moving_type= 4
                 msg_moving.moving_value_angular=0.0
-                msg_moving.moving_value_linear=0.20
+
+                # 주차 자리까지 직진
+                msg_moving.moving_value_linear=0.30
+
                 self.pub_moving.publish(msg_moving)
                 while True:
                     if self.is_moving_complete == True:
                         break
                 self.is_moving_complete = False
 
-                rospy.sleep(1)
+                rospy.sleep(0.2)
                 
                 rospy.loginfo("go back straight")
                 msg_moving = MovingParam()
                 msg_moving.moving_type= 5
                 msg_moving.moving_value_angular=0.0
-                msg_moving.moving_value_linear=0.20
+
+                # 주차 후 바로 후진
+                msg_moving.moving_value_linear=0.30
                 self.pub_moving.publish(msg_moving)
                 while True:
                     if self.is_moving_complete == True:
                         break
                 self.is_moving_complete = False
 
-                rospy.sleep(1)
+                rospy.sleep(0.2)
 
                 rospy.loginfo("go right")
                 msg_moving = MovingParam()
@@ -154,20 +159,22 @@ class DetectParking():
                         break
                 self.is_moving_complete = False
 
-                rospy.sleep(1)
+                rospy.sleep(0.2)
 
                 rospy.loginfo("go straight")
                 msg_moving = MovingParam()
                 msg_moving.moving_type= 4
                 msg_moving.moving_value_angular=0.0
-                msg_moving.moving_value_linear=0.9
+
+                # 후진 후 원래 자리로 직진
+                msg_moving.moving_value_linear=1.0
                 self.pub_moving.publish(msg_moving)
                 while True:
                     if self.is_moving_complete == True:
                         break
                 self.is_moving_complete = False
 
-                rospy.sleep(1)
+                rospy.sleep(0.2)
 
                 rospy.loginfo("go left")
                 msg_moving = MovingParam()
@@ -180,7 +187,7 @@ class DetectParking():
                         break
                 self.is_moving_complete = False
 
-                rospy.sleep(1)   
+                rospy.sleep(0.2)   
 
                 rospy.loginfo("go straight")
                 msg_moving = MovingParam()
@@ -193,7 +200,7 @@ class DetectParking():
                         break
                 self.is_moving_complete = False
 
-                rospy.sleep(1)       
+                rospy.sleep(0.2)       
             
             elif self.is_obstacle_detected_L == False:
                 rospy.loginfo("left parking is clear")
@@ -294,7 +301,7 @@ class DetectParking():
             msg_pub_parking_return.data = self.StepOfParking.exit.value
 
         self.pub_parking_return.publish(msg_pub_parking_return)
-        rospy.sleep(3)            
+        # rospy.sleep(3)            
 
     def cbScanObstacle(self, scan):
         angle_scan = 30

@@ -84,7 +84,8 @@ class DetectContruction():
             rospy.loginfo("go straight")
             msg_moving.moving_type= 4
             msg_moving.moving_value_angular=0.0
-            msg_moving.moving_value_linear=0.25
+            # 처음 장애물에서 왼쪽으로 돈 후 앞으로 직진
+            msg_moving.moving_value_linear=0.3
             self.pub_moving.publish(msg_moving)
             while True:
                 if self.is_moving_complete == True:
@@ -108,31 +109,33 @@ class DetectContruction():
             rospy.loginfo("go straight")
             msg_moving.moving_type= 4
             msg_moving.moving_value_angular=0.0
-            msg_moving.moving_value_linear=0.5
-            self.pub_moving.publish(msg_moving)
-            while True:
-                if self.is_moving_complete == True:
-                    break
-            self.is_moving_complete = False
-
-            rospy.sleep(1)
-
-            rospy.loginfo("go right")
-            msg_moving.moving_type=3
-            msg_moving.moving_value_angular=90
-            msg_moving.moving_value_linear=0.0
-            self.pub_moving.publish(msg_moving)
-            while True:
-                if self.is_moving_complete == True:
-                    break
-            self.is_moving_complete = False
-
-            rospy.sleep(1)
-
-            rospy.loginfo("go straight")
-            msg_moving.moving_type= 4
-            msg_moving.moving_value_angular=0.0
+            # 두번째 장애물에서 앞으로 직진
             msg_moving.moving_value_linear=0.4
+            self.pub_moving.publish(msg_moving)
+            while True:
+                if self.is_moving_complete == True:
+                    break
+            self.is_moving_complete = False
+
+            rospy.sleep(1)
+
+            rospy.loginfo("go right")
+            msg_moving.moving_type=3
+            msg_moving.moving_value_angular=90
+            msg_moving.moving_value_linear=0.0
+            self.pub_moving.publish(msg_moving)
+            while True:
+                if self.is_moving_complete == True:
+                    break
+            self.is_moving_complete = False
+
+            rospy.sleep(1)
+
+            rospy.loginfo("go straight")
+            msg_moving.moving_type= 4
+            msg_moving.moving_value_angular=0.0
+            # 세번째 장애물에서 앞으로 직진
+            msg_moving.moving_value_linear=0.25
             self.pub_moving.publish(msg_moving)
             while True:
                 if self.is_moving_complete == True:
@@ -156,7 +159,8 @@ class DetectContruction():
             rospy.loginfo("go straight")
             msg_moving.moving_type=4
             msg_moving.moving_value_angular=0.0
-            msg_moving.moving_value_linear=0.4
+            # 마지막에 앞으로 직진
+            msg_moving.moving_value_linear=0.35
             self.pub_moving.publish(msg_moving)
             while True:
                 if self.is_moving_complete == True:
@@ -195,7 +199,7 @@ class DetectContruction():
             msg_pub_construction_return.data = self.StepOfConstruction.exit.value
 
         self.pub_construction_return.publish(msg_pub_construction_return)
-        rospy.sleep(3)
+        rospy.sleep(1)
 
     def cbScanObstacle(self, scan):
         angle_scan = 25
